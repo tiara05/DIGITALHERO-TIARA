@@ -10,13 +10,12 @@ class AdminController extends Controller
 {
     public function showLogin()
     {
-        // Jika admin sudah login, langsung redirect ke dashboard
-        if (session()->has('admin_logged_in')) {
+        if (Auth::guard('admin')->check()) {
             return redirect()->route('admin.index');
         }
-        
         return view('admin.login');
     }
+
 
     public function login(Request $request)
     {
@@ -42,7 +41,7 @@ class AdminController extends Controller
         return view('admin.index');
     }
 
-    public function logout()
+    public function logout(Request $request)
     {
         Auth::guard('admin')->logout();
         $request->session()->invalidate();

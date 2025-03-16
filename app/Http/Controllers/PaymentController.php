@@ -29,6 +29,14 @@ class PaymentController extends Controller
                 'order_id' => 'ORDER-' . $booking->id,
                 'gross_amount' => $booking->total_price,
             ],
+            'item_details' => [
+                [
+                    'id' => 'ps_rental',
+                    'price' => 30000,
+                    'quantity' => 1,
+                    'name' => "Rental PS" // Ubah dari "NelayanKu" ke nama bisnismu
+                ]
+            ],
             'customer_details' => [
                 'first_name' => $booking->user_name,
             ],

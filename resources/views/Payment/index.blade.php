@@ -27,6 +27,7 @@
                     <td>{{ $booking->qty }}</td>
                 </tr>
             </table>
+            <h4>Total Bayar: {{ 'Rp ' . number_format($booking->total_price, 0, ',', '.') }}</h4>
             <div class="text-center mt-3">
                 <button class="btn btn-warning" id="pay-button">Bayar Sekarang</button>
             </div>

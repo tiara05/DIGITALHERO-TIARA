@@ -23,13 +23,13 @@
                 <form action="{{ route('admin.order.update', $order->id) }}" method="POST">
                     @csrf
                     <input type="hidden" name="status_barang" value="PS Sudah Diambil">
-                    <button type="submit" class="btn btn-success w-50">Oke, Pinjamkan PS</button>
+                    <button type="submit" class="btn btn-success w-100">Oke, Pinjamkan PS</button>
                 </form>
             @elseif($order->status_barang == 'PS Sudah Diambil')
                 <form action="{{ route('admin.order.update', $order->id) }}" method="POST">
                     @csrf
                     <input type="hidden" name="status_barang" value="PS Sudah Dikembalikan">
-                    <button type="submit" class="btn btn-warning w-50">Kembalikan PS</button>
+                    <button type="submit" class="btn btn-warning w-100">Kembalikan PS</button>
                 </form>
             @endif
         </div>
