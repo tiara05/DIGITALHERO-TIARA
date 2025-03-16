@@ -34,7 +34,7 @@ class PaymentController extends Controller
                     'id' => 'ps_rental',
                     'price' => 30000,
                     'quantity' => 1,
-                    'name' => "Rental PS" // Ubah dari "NelayanKu" ke nama bisnismu
+                    'name' => "Rental PS"
                 ]
             ],
             'customer_details' => [

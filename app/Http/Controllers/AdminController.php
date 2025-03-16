@@ -34,7 +34,6 @@ class AdminController extends Controller
 
     public function dashboard()
     {
-        // Pastikan hanya admin yang sudah login yang bisa masuk dashboard
         if (!session()->has('admin_logged_in')) {
             return redirect()->route('admin.login.form')->withErrors(['msg' => 'Silakan login terlebih dahulu.']);
         }
@@ -58,12 +57,6 @@ class AdminController extends Controller
 
         return view('admin.index', compact('orders'));
     }
-
-    // public function showOrder($id)
-    // {
-    //     $order = Booking::findOrFail($id);
-    //     return view('admin.detail', compact('order'));
-    // }
 
     public function showOrder($id)
     {
@@ -108,20 +101,4 @@ class AdminController extends Controller
         return redirect()->back()->with('success', 'Status berhasil diperbarui');
     }
 
-
-    // public function updateOrder(Request $request, $id)
-    // {
-    //     $order = Booking::findOrFail($id);
-        
-
-    //     if ($order->status_barang == "belum diambil") {
-    //         $order->status_barang = "PS Sudah Diambil";
-    //     } elseif ($order->status_barang == "PS Sudah Diambil") {
-    //         $order->status_barang = "PS Sudah Dikembalikan";
-    //     }
-
-    //     $order->save();
-
-    //     return redirect()->route('admin.order.show', $id)->with('success', 'Status order berhasil diperbarui');
-    // }
 }

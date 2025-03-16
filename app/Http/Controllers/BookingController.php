@@ -62,9 +62,6 @@ class BookingController extends Controller
         $availability->available_units -= $validated['qty'];
         $availability->save();
 
-        // Generate order_id unik
-        // $orderId = 's' . Str::random(5);
-
         // Simpan booking
         $booking = Booking::create([
             // 'id' => $orderId,
@@ -103,7 +100,6 @@ class BookingController extends Controller
 
     public function updateStatus($orderId, $status)
     {
-        // Hapus "ORDER-" dari orderId agar sesuai dengan database
         $orderId = str_replace('ORDER-', '', $orderId);
 
         // Cari booking berdasarkan orderId
@@ -113,7 +109,7 @@ class BookingController extends Controller
             return redirect('/')->with('error', 'Order tidak ditemukan.');
         }
 
-        // Tentukan status berdasarkan parameter
+        // status berdasarkan parameter
         if ($status == 'diambil') {
             $booking->update(['status_barang' => 'sudah diambil']);
         } elseif ($status == 'dikembalikan') {
