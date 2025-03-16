@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Booking;
+use App\Models\PlayStation;
 
 class AdminController extends Controller
 {
@@ -58,25 +59,69 @@ class AdminController extends Controller
         return view('admin.index', compact('orders'));
     }
 
+    // public function showOrder($id)
+    // {
+    //     $order = Booking::findOrFail($id);
+    //     return view('admin.detail', compact('order'));
+    // }
+
     public function showOrder($id)
     {
         $order = Booking::findOrFail($id);
-        return view('admin.detail', compact('order'));
+        $availableSlots = PlayStation::where('status', 'tersedia')
+        ->where('jenis', $order->rental_type) // Filter berdasarkan jenis PS yang dipilih user
+        ->get();
+        return view('admin.detail', compact('order', 'availableSlots'));
     }
+
 
     public function updateOrder(Request $request, $id)
     {
         $order = Booking::findOrFail($id);
         
+        if ($request->status_barang == "PS Sudah Diambil") {
+            // Validasi slot PS yang dipilih
+            $request->validate([
+                'kode_ps' => 'required|exists:playstations,id',
+            ]);
 
-        if ($order->status_barang == "belum diambil") {
+            // Update status PS menjadi dipinjam
+            $playstation = PlayStation::findOrFail($request->kode_ps);
+            $playstation->status = 'dipinjam';
+            $playstation->save();
+
+            // Simpan status peminjaman
             $order->status_barang = "PS Sudah Diambil";
-        } elseif ($order->status_barang == "PS Sudah Diambil") {
+            $order->kode_ps = $playstation->slot;
+            $order->save();
+
+
+        } elseif ($request->status_barang == "PS Sudah Dikembalikan") {
+            // Kembalikan PS ke status tersedia
+            PlayStation::where('slot', $order->kode_ps)->update(['status' => 'tersedia']);
+
+            // Update status order
             $order->status_barang = "PS Sudah Dikembalikan";
+            $order->save();
         }
 
-        $order->save();
-
-        return redirect()->route('admin.order.show', $id)->with('success', 'Status order berhasil diperbarui');
+        return redirect()->back()->with('success', 'Status berhasil diperbarui');
     }
+
+
+    // public function updateOrder(Request $request, $id)
+    // {
+    //     $order = Booking::findOrFail($id);
+        
+
+    //     if ($order->status_barang == "belum diambil") {
+    //         $order->status_barang = "PS Sudah Diambil";
+    //     } elseif ($order->status_barang == "PS Sudah Diambil") {
+    //         $order->status_barang = "PS Sudah Dikembalikan";
+    //     }
+
+    //     $order->save();
+
+    //     return redirect()->route('admin.order.show', $id)->with('success', 'Status order berhasil diperbarui');
+    // }
 }
